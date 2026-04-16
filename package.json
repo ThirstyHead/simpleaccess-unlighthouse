@@ -15,6 +15,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "static": "unlighthouse-ci --site https://simpleaccess.io/ --disable-dynamic-sampling --build-static --output-path static",
     "rollup": "node rollup.js",
     "testm": "TODAY=$(date \"+%Y-%m-%d\"); unlighthouse-ci --site https://simpleaccess.io/ --mobile  --output-path reports/mobile/$TODAY ",
     "testd": "TODAY=$(date \"+%Y-%m-%d\"); unlighthouse-ci --site https://simpleaccess.io/ --desktop --output-path reports/desktop/$TODAY ",
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "unlighthouse": "^0.17.9",
+    "unlighthouse-ci": "^0.17.9",
     "walker": "^1.0.8"
   }
 }
