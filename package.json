@@ -1,0 +1,28 @@
+{
+  "name": "simpleaccess-unlighthouse",
+  "version": "0.1.0",
+  "description": "Unlighthouse scan of SimpleAccess.io",
+  "homepage": "https://github.com/ThirstyHead/simpleaccess-unlighthouse#readme",
+  "bugs": {
+    "url": "https://github.com/ThirstyHead/simpleaccess-unlighthouse/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThirstyHead/simpleaccess-unlighthouse.git"
+  },
+  "license": "CC-BY-4.0",
+  "author": "Scott Davis <scott@thirstyhead.com> (https://thirstyhead.com/)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "rollup": "node rollup.js",
+    "testm": "TODAY=$(date \"+%Y-%m-%d\"); unlighthouse-ci --site https://simpleaccess.io/ --mobile  --output-path reports/mobile/$TODAY ",
+    "testd": "TODAY=$(date \"+%Y-%m-%d\"); unlighthouse-ci --site https://simpleaccess.io/ --desktop --output-path reports/desktop/$TODAY ",
+    "summary": "node summary.js",
+    "test": "npm run testm; npm run testd; npm run summary"
+  },
+  "dependencies": {
+    "unlighthouse": "^0.17.9",
+    "walker": "^1.0.8"
+  }
+}
