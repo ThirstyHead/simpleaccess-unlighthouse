@@ -17,6 +17,7 @@
   "scripts": {
     "static": "unlighthouse-ci --site https://simpleaccess.io/ --disable-dynamic-sampling --build-static --output-path static",
     "json": "unlighthouse-ci --site https://simpleaccess.io/ --disable-dynamic-sampling --reporter json --output-path json",
+    "csv": "unlighthouse-ci --site https://simpleaccess.io/ --disable-dynamic-sampling --reporter csv --output-path csv",
     "rollup": "node rollup.js",
     "testm": "TODAY=$(date \"+%Y-%m-%d\"); unlighthouse-ci --site https://simpleaccess.io/ --mobile  --output-path reports/mobile/$TODAY ",
     "testd": "TODAY=$(date \"+%Y-%m-%d\"); unlighthouse-ci --site https://simpleaccess.io/ --desktop --output-path reports/desktop/$TODAY ",
