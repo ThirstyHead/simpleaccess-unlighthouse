@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleAccess Manifest | Proving the Accessible Promise</title>
+    <meta name="description" content="A collaborative record between a Digital Accessibility expert and an AI exploring the engineering rigor used to validate SimpleAccess.io.">
+    
+    <style>
+        /* SMACSS CATEGORY: BASE 
+           Fundamental styles and variables.
+        */
+        :root {
+            --color-navy: #002D62; /* SimpleAccess Navy */
+            --color-indigo: #4338CA;
+            --color-slate-50: #F8FAFC;
+            --color-slate-100: #F1F5F9;
+            --color-slate-200: #E2E8F0;
+            --color-slate-700: #334155;
+            --color-slate-900: #0F172A;
+            --color-white: #FFFFFF;
+            --color-emerald: #10B981;
+            
+            --border-width: 3px;
+            --border-thick: 6px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--color-slate-900);
+            background-color: var(--color-white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            line-height: 1.1;
+            margin-top: 0;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        a {
+            color: inherit;
+            text-underline-offset: 0.2em;
+            transition: color 0.2s ease;
+        }
+
+        /* Skip Link - WCAG SC 2.4.1 */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 0;
+            background: var(--color-navy);
+            color: white;
+            padding: 1rem;
+            z-index: 100;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* SMACSS CATEGORY: LAYOUT 
+           Major structural containers.
+        */
+        .l-header {
+            border-bottom: var(--border-thick) solid var(--color-slate-900);
+            padding: 1.5rem;
+            background: var(--color-white);
+        }
+
+        .l-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .l-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .l-hero {
+            background-color: var(--color-slate-50);
+            padding: 6rem 1.5rem;
+            border-bottom: var(--border-width) solid var(--color-slate-900);
+        }
+
+        .l-section {
+            padding: 6rem 1.5rem;
+        }
+
+        .l-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+        }
+
+        @media (min-width: 768px) {
+            .l-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .l-footer {
+            background-color: var(--color-white);
+            border-top: var(--border-thick) solid var(--color-slate-900);
+            padding: 4rem 1.5rem;
+        }
+
+        /* SMACSS CATEGORY: MODULES 
+           Independent UI components. No drop shadows.
+        */
+
+        /* Branding Module */
+        .m-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .m-brand__icon {
+            background: var(--color-slate-900);
+            color: white;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            border-radius: 2px;
+        }
+
+        .m-brand__text {
+            font-size: 1.5rem;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+        }
+
+        .m-brand__highlight {
+            color: var(--color-indigo);
+        }
+
+        /* Navigation List */
+        .m-nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8125rem;
+            letter-spacing: 0.1em;
+        }
+
+        .m-nav-list a {
+            text-decoration: none;
+            padding: 0.5rem 0;
+            border-bottom: 3px solid transparent;
+        }
+
+        .m-nav-list a:hover,
+        .m-nav-list a:focus {
+            color: var(--color-indigo);
+            border-bottom-color: var(--color-indigo);
+            outline: none;
+        }
+
+        /* Button Module */
+        .m-btn {
+            display: inline-block;
+            padding: 1.125rem 2.25rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            text-decoration: none;
+            border: var(--border-width) solid var(--color-slate-900);
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .m-btn--primary {
+            background: var(--color-slate-900);
+            color: white;
+        }
+
+        .m-btn--primary:hover,
+        .m-btn--primary:focus {
+            background: var(--color-indigo);
+            border-color: var(--color-indigo);
+            outline: none;
+        }
+
+        .m-btn--outline:hover,
+        .m-btn--outline:focus {
+            background: var(--color-slate-900);
+            color: var(--color-white);
+            outline: none;
+        }
+
+        /* Terminal Module - Clean, no shadow */
+        .m-terminal {
+            background: var(--color-slate-900);
+            color: var(--color-white);
+            padding: 2.5rem;
+            border: var(--border-width) solid var(--color-slate-900);
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.875rem;
+        }
+
+        .m-terminal__header {
+            border-bottom: 1px solid var(--color-slate-700);
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            color: var(--color-slate-400);
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .m-terminal__cmd { color: var(--color-indigo); font-weight: bold; }
+        .m-terminal__success { color: var(--color-emerald); font-weight: bold; }
+        .m-terminal__comment { color: var(--color-slate-400); font-style: italic; }
+
+        /* Card Module - Flat design */
+        .m-card {
+            border: var(--border-width) solid var(--color-slate-900);
+            padding: 3rem;
+            background: var(--color-white);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .m-card:hover {
+            border-color: var(--color-indigo);
+        }
+
+        .m-card__title {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--color-slate-900);
+        }
+
+        .m-card__tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            background: var(--color-slate-900);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .m-card__footer {
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 2px solid var(--color-slate-100);
+            font-weight: 800;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            color: var(--color-slate-400);
+            letter-spacing: 0.05em;
+        }
+
+        /* SMACSS CATEGORY: STATE / UTILITY */
+        .u-text-indigo { color: var(--color-indigo); }
+        .u-bg-indigo { background-color: var(--color-indigo); color: white; }
+        .u-italic { font-style: italic; }
+        .u-mb-large { margin-bottom: 3rem; }
+        .u-sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="l-header">
+        <div class="l-container l-flex">
+            <a href="/" class="m-brand" aria-label="SimpleAccess Manifest Home">
+                <div class="m-brand__icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <div class="m-brand__text">
+                    SimpleAccess <span class="m-brand__highlight">Manifest</span>
+                </div>
+            </a>
+            <nav aria-label="Main Navigation">
+                <ul class="m-nav-list">
+                    <li><a href="#rigor">The Rigor</a></li>
+                    <li><a href="#artifacts">The Data</a></li>
+                    <li><a href="https://simpleaccess.io" target="_blank" rel="noopener">SimpleAccess.io</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="l-hero">
+            <div class="l-container">
+                <h1 style="font-size: clamp(2.5rem, 8vw, 5.5rem); margin-bottom: 2.5rem; letter-spacing: -0.03em;">
+                    Proving the <br>
+                    <span class="u-text-indigo u-italic" style="text-decoration: underline; text-decoration-thickness: 0.08em; text-underline-offset: 0.1em;">Accessible Promise.</span>
+                </h1>
+                <p style="font-size: 1.5rem; max-width: 800px; font-weight: 500; line-height: 1.4;" class="u-italic text-slate-700">
+                    "What happens when a Digital Accessibility expert and an AI set out to build a site that walks the walk? We use Lighthouse to prove it."
+                </p>
+                <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 4rem;">
+                    <a href="#artifacts" class="m-btn m-btn--primary">Explore the Reports</a>
+                    <a href="#rigor" class="m-btn m-btn--outline">The Methodology</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Methodology Section -->
+        <section id="rigor" class="l-section">
+            <div class="l-container">
+                <div class="l-grid">
+                    <div>
+                        <h2 style="font-size: 2.75rem;" class="u-mb-large">Engineering Integrity</h2>
+                        <p style="font-size: 1.25rem; color: var(--color-slate-700);">
+                            We trust our results because we use the same tools as the experts. <strong>Google Lighthouse</strong> is more than just a score; it is a diagnostic engine built upon the stable foundation of <strong>axe-core</strong> by Deque.
+                        </p>
+                        <p style="font-size: 1.25rem; color: var(--color-slate-700);">
+                            By integrating axe-core, Lighthouse ensures that every audit is grounded in <strong>zero false positives</strong>. If a failure is flagged, it is a real barrier for a real person.
+                        </p>
+                        <ul style="list-style: none; padding: 0; margin-top: 3rem; display: flex; flex-direction: column; gap: 1.25rem;">
+                            <li style="display: flex; gap: 1rem; align-items: center; font-weight: 900; text-transform: uppercase; font-size: 0.875rem; letter-spacing: 0.05em;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-indigo)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Validated against WCAG 2.1 AA
+                            </li>
+                            <li style="display: flex; gap: 1rem; align-items: center; font-weight: 900; text-transform: uppercase; font-size: 0.875rem; letter-spacing: 0.05em;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-indigo)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Built-in to Chrome DevTools
+                            </li>
+                            <li style="display: flex; gap: 1rem; align-items: center; font-weight: 900; text-transform: uppercase; font-size: 0.875rem; letter-spacing: 0.05em;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-indigo)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Open-source Rigor
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="m-terminal">
+                        <div class="m-terminal__header">
+                            <span>Manifest Generation</span>
+                            <span>Audit Log</span>
+                        </div>
+                        <div class="m-terminal__content">
+                            <p><span class="m-terminal__cmd">$ npx unlighthouse --site simpleaccess.io</span></p>
+                            <p class="m-terminal__comment"># Initiating full-site scan via axe-core engine</p>
+                            <p class="m-terminal__success">✔ Discovered 12 routes from sitemap.xml</p>
+                            <p class="m-terminal__comment">...Scanning /guides/makingof/</p>
+                            <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border: 2px solid var(--color-emerald); margin: 2rem 0;">
+                                <p style="margin: 0; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-emerald);">
+                                    Accessibility Score: 100/100
+                                </p>
+                            </div>
+                            <p style="font-size: 0.75rem; color: var(--color-slate-400); text-transform: uppercase; font-weight: bold;">
+                                Reports generated: html, json, csv, csv-expanded
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Artifacts Section -->
+        <section id="artifacts" class="l-section" style="background-color: var(--color-slate-900); color: white;">
+            <div class="l-container">
+                <div style="max-width: 750px;" class="u-mb-large">
+                    <h2 style="font-size: 3rem; color: white; margin-bottom: 1.5rem;">The Data Artifacts</h2>
+                    <p style="font-size: 1.35rem; color: var(--color-slate-400); line-height: 1.5;">
+                        We share our audit results in multiple formats because accessibility is a cross-team effort. Each format serves a different persona in the collaborative loop.
+                    </p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
+                    <!-- HTML Card -->
+                    <article class="m-card">
+                        <span class="m-card__tag">Experience Owners</span>
+                        <h3 class="m-card__title">Interactive HTML</h3>
+                        <p style="color: var(--color-slate-700);">Visual scores and remediation guides. The 'Sight' of our audit, showing the site through the eyes of the engine.</p>
+                        <div class="m-card__footer">
+                            WCAG SC 1.3.1 (Info & Relationships)
+                        </div>
+                    </article>
+
+                    <!-- JSON Card -->
+                    <article class="m-card">
+                        <span class="m-card__tag">Software Engineers</span>
+                        <h3 class="m-card__title">Structured JSON</h3>
+                        <p style="color: var(--color-slate-700);">The 'Robust' pillar. Pure data containing every audit result, ready for automated CI/CD testing gates.</p>
+                        <div class="m-card__footer">
+                            WCAG SC 4.1.1 (Parsing)
+                        </div>
+                    </article>
+
+                    <!-- CSV Card -->
+                    <article class="m-card">
+                        <span class="m-card__tag">Project Managers</span>
+                        <h3 class="m-card__title">Filterable CSV</h3>
+                        <p style="color: var(--color-slate-700);">The 'Touch' pillar. A prioritized task list tailor-made for importing into spreadsheets to track remediation progress.</p>
+                        <div class="m-card__footer">
+                            WCAG SC 2.4.3 (Focus Order)
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="l-section" style="text-align: center; max-width: 850px; margin: 0 auto; padding-top: 8rem; padding-bottom: 8rem;">
+            <div style="color: var(--color-indigo); margin-bottom: 2.5rem;">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            </div>
+            <h2 style="font-size: 3rem; margin-bottom: 2rem;" class="u-italic">Consistency is Compliance.</h2>
+            <p style="font-size: 1.4rem; color: var(--color-slate-700); font-weight: 400; line-height: 1.6;">
+                Testing isn't a final hurdle—it's the heartbeat of our development. By using Lighthouse and Unlighthouse, we ensured that every line of code we wrote together for SimpleAccess.io met the same rigorous standards of Sight, Sound, and Touch.
+            </p>
+        </section>
+    </main>
+
+    <footer class="l-footer">
+        <div class="l-container l-flex">
+            <div class="m-brand">
+                <div class="m-brand__icon" style="padding: 0.35rem;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <div class="m-brand__text" style="font-size: 1.125rem;">SimpleAccess Manifest</div>
+            </div>
+            
+            <p style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-slate-400); margin: 0;">
+                © 2026 Record of Engineering Integrity
+            </p>
+            
+            <div style="font-size: 0.75rem; font-weight: 900; text-transform: uppercase; display: flex; gap: 2.5rem; letter-spacing: 0.05em;">
+                <a href="https://simpleaccess.io" style="text-decoration: none;">SimpleAccess.io</a>
+                <a href="#main-content" style="text-decoration: none;">Back to Top</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

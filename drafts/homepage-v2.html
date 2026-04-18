@@ -1,0 +1,254 @@
+import React, { useState } from 'react';
+import { 
+  Terminal, 
+  Search, 
+  Cpu, 
+  ShieldCheck, 
+  FileCode, 
+  Layers, 
+  BarChart, 
+  ArrowRight,
+  Monitor,
+  Database,
+  Layout,
+  UserCheck
+} from 'lucide-react';
+
+const App = () => {
+  const [activeReport, setActiveReport] = useState('html');
+
+  const dataArtifacts = {
+    html: {
+      title: "HTML Visual Reports",
+      desc: "The human-readable proof. This is where we see the scores in living color, just like a user would. It provides the visual context needed to understand exactly where a page succeeded or failed its audit.",
+      icon: <Monitor className="w-8 h-8" />,
+      tag: "For Designers & Stakeholders"
+    },
+    json: {
+      title: "JSON Audit Data",
+      desc: "The machine-readable truth. Every detail, from the exact DOM element to the WCAG success criteria, is nested in a structured format ready for automated processing and deep analysis.",
+      icon: <Database className="w-8 h-8" />,
+      tag: "For Engineers & CI/CD"
+    },
+    csv: {
+      title: "CSV Spreadsheets",
+      desc: "The prioritized backlog. We exported the full site audit into a format that plugs directly into Excel or Google Sheets, turning hundreds of page audits into a filterable task list.",
+      icon: <BarChart className="w-8 h-8" />,
+      tag: "For Project Managers"
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-indigo-100">
+      {/* Skip Link */}
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-indigo-600 focus:text-white focus:z-50">
+        Skip to main content
+      </a>
+
+      {/* Navigation - Mirrored from SimpleAccess.io DNA */}
+      <nav className="border-b-4 border-slate-900 py-6 px-4 sm:px-8 bg-white sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="bg-slate-900 p-2 text-white">
+              <ShieldCheck className="w-6 h-6" />
+            </div>
+            <h1 className="text-2xl font-black tracking-tighter uppercase italic">
+              SimpleAccess <span className="text-indigo-600">Unlighthouse</span>
+            </h1>
+          </div>
+          <div className="hidden md:flex gap-8 font-bold text-sm uppercase tracking-widest">
+            <a href="#how" className="hover:text-indigo-600 underline decoration-4 underline-offset-8">The Journey</a>
+            <a href="#rigor" className="hover:text-indigo-600 underline decoration-4 underline-offset-8">The Rigor</a>
+            <a href="#data" className="hover:text-indigo-600 underline decoration-4 underline-offset-8">The Data</a>
+          </div>
+        </div>
+      </nav>
+
+      <main id="main-content">
+        {/* Narrative Hero */}
+        <section className="py-20 px-4 border-b-4 border-slate-900 bg-slate-50">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-indigo-600 font-black uppercase tracking-widest mb-4">A Collaboration Log</p>
+            <h2 className="text-4xl md:text-6xl font-black leading-none mb-8 tracking-tight">
+              What happens when an <span className="underline decoration-indigo-500">Expert</span> and an <span className="underline decoration-slate-900">AI</span> build a site together?
+            </h2>
+            <p className="text-xl md:text-2xl text-slate-700 leading-relaxed font-medium max-w-3xl mx-auto">
+              We set out to build <span className="font-bold">SimpleAccess.io</span>—a site that doesn't just talk about Sight, Sound, and Touch, but actually demonstrates it.
+            </p>
+            <div className="mt-12 p-8 bg-white border-4 border-slate-900 shadow-[12px_12px_0px_0px_rgba(15,23,42,1)]">
+              <p className="text-lg leading-relaxed text-left italic font-serif">
+                "It wasn't enough to just say it was accessible. We had to prove it. This website is the audit log of that journey—explaining how we used open-source engineering rigor to validate every single page we built."
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* The Methodology */}
+        <section id="how" className="py-24 px-4 bg-white border-b-4 border-slate-900">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-3xl font-black mb-4">Step 1: Spot-Checking with Lighthouse</h3>
+                  <p className="text-lg text-slate-600 leading-relaxed">
+                    While coding, we used the built-in **Google Lighthouse** in Chrome. It allowed us to instantly audit individual pages without ever leaving our development environment. It gave us the immediate feedback loop required to catch accessibility debt before it even reached the main branch.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-3xl font-black mb-4">Step 2: Scaling with Unlighthouse</h3>
+                  <p className="text-lg text-slate-600 leading-relaxed">
+                    Once the site grew, spot-checking wasn't enough. We deployed **Unlighthouse**—a free and open-source tool that crawls the entire sitemap in parallel. It took the engineering rigor of Lighthouse and applied it to every single URL at once.
+                  </p>
+                </div>
+              </div>
+              <div className="bg-slate-900 rounded-lg p-6 text-emerald-400 font-mono text-sm shadow-2xl relative">
+                <div className="flex gap-2 mb-4 pb-4 border-b border-slate-700">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-slate-500 italic"># Running full-site audit on SimpleAccess.io</p>
+                  <p>$ npx unlighthouse --site simpleaccess.io</p>
+                  <p className="pt-2">🔍 Discovered 12 routes from sitemap.xml</p>
+                  <p>🚀 Scanning pages in parallel...</p>
+                  <div className="pt-4 grid grid-cols-2 gap-2">
+                    <div className="bg-slate-800 p-2 rounded">/home: <span className="text-emerald-400 font-bold">100</span></div>
+                    <div className="bg-slate-800 p-2 rounded">/wcag: <span className="text-emerald-400 font-bold">100</span></div>
+                    <div className="bg-slate-800 p-2 rounded">/pdf: <span className="text-emerald-400 font-bold">98</span></div>
+                    <div className="bg-slate-800 p-2 rounded">/office: <span className="text-emerald-400 font-bold">100</span></div>
+                  </div>
+                  <p className="pt-4 text-white font-bold">✔ Audit complete. Reports generated in HTML, JSON, and CSV.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* The Rigor (Axe-Core) */}
+        <section id="rigor" className="py-24 px-4 bg-indigo-600 text-white">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-block p-4 bg-white text-indigo-600 rounded-full mb-8">
+              <Cpu className="w-10 h-10" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black mb-6">Built on the Foundation of Axe-Core</h2>
+            <p className="text-xl md:text-2xl leading-relaxed opacity-90 mb-12">
+              We trust our data because Lighthouse doesn't guess. It is built upon the stable foundation of **axe-core** by Deque. By utilizing the same engine that powers the world's most trusted accessibility tools, we ensure that our results are free of false positives and grounded in engineering rigor.
+            </p>
+            <div className="grid sm:grid-cols-3 gap-8">
+              <div className="p-6 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
+                <ShieldCheck className="w-8 h-8 mb-4 mx-auto" />
+                <h4 className="font-bold mb-2">Zero False Positives</h4>
+                <p className="text-sm opacity-80 text-white">If it's flagged, it's a real barrier for a real person.</p>
+              </div>
+              <div className="p-6 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
+                <FileCode className="w-8 h-8 mb-4 mx-auto" />
+                <h4 className="font-bold mb-2">Native Standards</h4>
+                <p className="text-sm opacity-80 text-white">Directly mapped to WCAG 2.1 AA success criteria.</p>
+              </div>
+              <div className="p-6 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
+                <UserCheck className="w-8 h-8 mb-4 mx-auto" />
+                <h4 className="font-bold mb-2">Manual Ready</h4>
+                <p className="text-sm opacity-80 text-white">Identifies exactly where human intuition must take over.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* The Data Artifacts */}
+        <section id="data" className="py-24 px-4 bg-white border-t-4 border-slate-900">
+          <div className="max-w-6xl mx-auto">
+            <div className="mb-16">
+              <h2 className="text-4xl font-black mb-4">The Data Behind the Mission</h2>
+              <p className="text-xl text-slate-600">Proof of accessibility doesn't come in one size. We generated these artifacts to serve different collaborative needs.</p>
+            </div>
+
+            <div className="flex flex-col lg:flex-row gap-12">
+              <div className="flex flex-col gap-4 w-full lg:w-1/3">
+                {Object.keys(dataArtifacts).map((key) => (
+                  <button
+                    key={key}
+                    onClick={() => setActiveReport(key)}
+                    className={`text-left p-6 border-4 transition-all flex items-start gap-4 ${
+                      activeReport === key 
+                      ? "border-slate-900 bg-slate-50 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] -translate-x-1 -translate-y-1" 
+                      : "border-transparent hover:bg-slate-50 text-slate-400"
+                    }`}
+                  >
+                    <div className={activeReport === key ? "text-indigo-600" : "text-slate-300"}>
+                      {dataArtifacts[key].icon}
+                    </div>
+                    <div>
+                      <h4 className={`font-bold text-lg leading-tight mb-1 ${activeReport === key ? "text-slate-900" : ""}`}>
+                        {dataArtifacts[key].title}
+                      </h4>
+                      <p className="text-xs uppercase font-black tracking-widest">{dataArtifacts[key].tag}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex-1 bg-slate-900 rounded-2xl p-8 lg:p-12 text-white relative overflow-hidden flex flex-col justify-center min-h-[400px]">
+                <div className="relative z-10 max-w-xl">
+                  <h3 className="text-3xl font-black mb-6 uppercase tracking-tight italic">
+                    {dataArtifacts[activeReport].title}
+                  </h3>
+                  <p className="text-xl leading-relaxed text-slate-300">
+                    {dataArtifacts[activeReport].desc}
+                  </p>
+                  <button className="mt-10 flex items-center gap-2 px-6 py-3 bg-white text-slate-900 font-black uppercase tracking-widest rounded-lg hover:bg-indigo-50 transition-colors">
+                    View Sample Output <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
+                {/* Visual Accent */}
+                <div className="absolute right-0 bottom-0 translate-x-1/4 translate-y-1/4 opacity-10 pointer-events-none scale-150 text-indigo-400">
+                  {dataArtifacts[activeReport].icon}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Conclusion / CTA */}
+        <section className="py-24 px-4 bg-slate-50 border-t-4 border-slate-900 text-center">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-4xl font-black mb-8 leading-tight">Engineering rigor is how we keep our promises.</h2>
+            <p className="text-xl text-slate-600 mb-12">
+              Whether you're an expert spot-checking a button or an AI scanning ten thousand pages, the goal is the same: A web that delights the senses of every visitor.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="px-8 py-4 bg-slate-900 text-white rounded font-black uppercase tracking-widest hover:bg-slate-800 transition-all">
+                Explore Full Audit Log
+              </button>
+              <button className="px-8 py-4 border-4 border-slate-900 font-black uppercase tracking-widest hover:bg-slate-50 transition-all">
+                Learn about axe-core
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-white py-12 px-4 border-t-4 border-slate-900">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-3">
+            <div className="bg-slate-900 p-1 text-white">
+              <ShieldCheck className="w-5 h-5" />
+            </div>
+            <p className="font-black text-sm uppercase tracking-tighter">
+              SimpleAccess <span className="text-indigo-600">Unlighthouse</span>
+            </p>
+          </div>
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">
+            © 2026 A Collaborative Experiment in Digital Inclusivity
+          </p>
+          <div className="flex gap-6 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-slate-900">
+            <a href="https://simpleaccess.io" target="_blank" rel="noopener noreferrer">Visit SimpleAccess.io</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
